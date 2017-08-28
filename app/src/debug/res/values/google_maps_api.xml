@@ -1,0 +1,24 @@
+<resources>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=64:D0:92:15:F1:F7:29:31:AD:06:A7:BE:99:5C:3A:2F:58:98:D2:0C%3Banoopjain.maptimize
+
+    You can also add your credentials to an existing key, using these values:
+
+    Package name:
+    64:D0:92:15:F1:F7:29:31:AD:06:A7:BE:99:5C:3A:2F:58:98:D2:0C
+
+    SHA-1 certificate fingerprint:
+    64:D0:92:15:F1:F7:29:31:AD:06:A7:BE:99:5C:3A:2F:58:98:D2:0C
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBfaWipMgASlQcgJtddfm_zH-08xDBTwIo</string>
+</resources>
