@@ -107,6 +107,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void createRoute(){
         StringBuilder uri = new StringBuilder("https://www.google.com/maps/dir/?api=1");
         StringBuilder waypoints = new StringBuilder("&waypoints=");
+
         if(finalPlace == null) {
             for (int i = 0; i < placesList.size() - 1; i++) {//Place p : placesList){
                 Place p = placesList.get(i);
