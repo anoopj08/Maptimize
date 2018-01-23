@@ -107,7 +107,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void createRoute(){
         StringBuilder uri = new StringBuilder("https://www.google.com/maps/dir/?api=1");
         StringBuilder waypoints = new StringBuilder("&waypoints=");
-
+        placesList = OptimizeRoute.optimizeRoute(placesList);
         if(finalPlace == null) {
             for (int i = 0; i < placesList.size() - 1; i++) {//Place p : placesList){
                 Place p = placesList.get(i);
@@ -130,7 +130,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             uri.append("&destination=").append(finalPlace.getAddress());
         }
         uri.append(waypoints);
-        Log.i("URI: ",uri+"+!!!!!!!!!!!!!!!!");
+        //Log.i("URI: ",uri+"+!!!!!!!!!!!!!!!!");
         Uri gmmIntentUri = Uri.parse(uri.toString());
 
         //"&destination=Purdue University&travelmode=driving&waypoints=Indiana University%7CUniversity Of Chicago"
