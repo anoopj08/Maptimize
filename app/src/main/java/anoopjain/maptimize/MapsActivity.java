@@ -53,6 +53,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Marker mCurrLocationMarker;
     private Marker mPlacePickLocationMarker;
     private Location mLastLocation;
+    public LatLng currLatLng;
     private ArrayList<Marker> markers = new ArrayList<Marker>();
 
     private ListView placesListView;
@@ -103,11 +104,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listItems);
         placesListView.setAdapter(adapter);
     }
-//'%7C' == &
+    public String getCurrLatLng(){
+        return currLatLng.toString();
+    }
     private void createRoute(){
         StringBuilder uri = new StringBuilder("https://www.google.com/maps/dir/?api=1");
         StringBuilder waypoints = new StringBuilder("&waypoints=");
-        placesList = OptimizeRoute.optimizeRoute(placesList);
+        currLatLng = new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude());
+        placesList = OptimizeRoute.optimizeRoute(placesList,getCurrLatLng());
         if(finalPlace == null) {
             for (int i = 0; i < placesList.size() - 1; i++) {//Place p : placesList){
                 Place p = placesList.get(i);
