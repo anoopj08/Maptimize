@@ -7,6 +7,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.maps.DistanceMatrixApi;
 import com.google.maps.DistanceMatrixApiRequest;
 import com.google.maps.GeoApiContext;
+import com.google.maps.model.DistanceMatrix;
 
 import java.util.ArrayList;
 
@@ -18,37 +19,42 @@ import edu.princeton.cs.algs4.Graph;
 
 /**
  * Created by anoopjain on 10/25/17.
-*/
+ */
 
-public class OptimizeRoute{
+public class OptimizeRoute {
 
     private static final String baseUri = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial";
 
-    protected static ArrayList<Place> optimizeRoute(ArrayList<Place> placesList){
-
-        EdgeWeightedDigraph mapGraph = createGraph(placesList);
+    protected static ArrayList<Place> optimizeRoute(ArrayList<Place> placesList) {
+        try {
+            EdgeWeightedDigraph mapGraph = createGraph(placesList);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         return placesList;
     }
 
-    private static EdgeWeightedDigraph createGraph(ArrayList<Place> placesList){
+    private static EdgeWeightedDigraph createGraph(ArrayList<Place> placesList) throws Exception {
         EdgeWeightedDigraph retGraph = new EdgeWeightedDigraph(placesList.size());
-        GeoApiContext context = new GeoApiContext();//.setApiKey("AIzaSyAGKPBYxOUYrvRwkTD9aZU_lPdMTPKmGz8");
-
-        for(int i = 0 ; i < placesList.size(); i++){
-            for(int j = 0 ; j < placesList.size(); j++){
+        GeoApiContext.Builder contextBuilder = new GeoApiContext.Builder();//setApiKey("AIzaSyAGKPBYxOUYrvRwkTD9aZU_lPdMTPKmGz8").build();
+        contextBuilder.apiKey("AIzaSyAGKPBYxOUYrvRwkTD9aZU_lPdMTPKmGz8");
+        GeoApiContext context = contextBuilder.build();
+        String[] origins = new String[placesList.size()];
+        String[] destinations = new String[placesList.size()];
+        for(int i = 0 ; i < placesList.size() ; i ++){
+            origins[i] = placesList.get(i).getAddress().toString();
+            destinations[i] = placesList.get(i).getAddress().toString();
+        }
+        DistanceMatrix matrix = DistanceMatrixApi.getDistanceMatrix(context,origins,destinations).await();//
+        for (int i = 0; i < placesList.size(); i++) {
+            for (int j = 0; j < placesList.size(); j++) {
                 //add edge to graph with weight between two places
-                if(i != j) {
-                    StringBuilder uri = new StringBuilder(baseUri);
-                    uri.append("&origins=" + placesList.get(i).getAddress());
-                    uri.append("&destinations=" + placesList.get(j).getAddress());
-                    Log.i("DISTANCEMATRIX: ", uri.toString());
-                    DistanceMatrixApiRequest req = DistanceMatrixApi.getDistanceMatrix();
-                    //dispToast.makeText(, uri.toString(), Toast.LENGTH_LONG).show();
-
-                    //DirectedEdge de = new DirectedEdge();
+                if (i != j) {
+                    DirectedEdge de = new DirectedEdge(i, j, matrix.rows[i].elements[j].duration.inSeconds);
+                    retGraph.addEdge(de);
                 }
             }
         }
-        return null;
+        return retGraph;
     }
 }
